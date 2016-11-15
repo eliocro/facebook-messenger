@@ -68,7 +68,7 @@ function sendGenericMessage(recipientId) {
               title: 'Open Web URL'
             }, {
               type: 'postback',
-              title: 'Call Postback',
+              title: 'Tell me more',
               payload: 'Payload for first bubble',
             }]
           }]
@@ -96,7 +96,7 @@ function receivedMessage (event) {
   let attachments = message.attachments;
 
   if (text) {
-    if(text === 'yes') {
+    if(text.toLowerCase() === 'yes') {
       // if the keyword is yes, send product information
       sendGenericMessage(senderID);
     }
@@ -108,6 +108,21 @@ function receivedMessage (event) {
   else if (attachments) {
     sendTextMessage(senderID, 'Message with attachment received');
   }
+}
+
+
+function receivedPostback (event) {
+  let senderID = event.sender.id;
+  let recipientID = event.recipient.id;
+  let timeOfMessage = event.timestamp;
+
+  console.log('Received postback for user %d and page %d at %d with message:',
+    senderID, recipientID, timeOfMessage);
+
+  let postback = event.postback;
+  console.log(JSON.stringify(postback));
+
+  sendTextMessage(senderID, 'Sorry dude! That button doesn\'t work :(');
 }
 
 
@@ -136,6 +151,9 @@ module.exports = {
         entry.messaging.forEach(event => {
           if(event.message) {
             receivedMessage(event);
+          }
+          else if(event.postback) {
+            receivedPostback(event);
           }
           else {
             console.log('Webhook received unknown event: ', event);
