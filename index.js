@@ -18,7 +18,7 @@ const token = process.env.VERIFY_TOKEN || config.VERIFY_TOKEN;
 
 server.route({
   method: 'GET',
-  path: '/',
+  path: '/webhook',
   config: {
     handler: (request, reply) => {
       let qs = request.query;
