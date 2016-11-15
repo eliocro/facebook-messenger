@@ -122,6 +122,10 @@ function receivedPostback (event) {
   let postback = event.postback;
   console.log(JSON.stringify(postback));
 
+  if(postback.payload === 'START') {
+    return sendTextMessage(senderID, 'Hi there. Welcome! Do you want to know more?');
+  }
+
   sendTextMessage(senderID, 'Sorry dude! That button doesn\'t work :(');
 }
 
